@@ -29,9 +29,9 @@ property :full, [TrueClass, FalseClass], default: false
 action :tap do
   unless tapped?(new_resource.name)
     execute "tapping #{new_resource.name}" do
-      command "/usr/local/bin/brew tap #{full ? '--full' : ''} #{new_resource.name} #{url || ''}"
+      command "brew tap #{full ? '--full' : ''} #{new_resource.name} #{url || ''}"
       environment lazy { { 'HOME' => ::Dir.home(Homebrew.owner), 'USER' => Homebrew.owner } }
-      not_if "/usr/local/bin/brew tap | grep #{new_resource.name}"
+      not_if "brew tap | grep #{new_resource.name}"
       user Homebrew.owner
     end
   end
@@ -40,9 +40,9 @@ end
 action :untap do
   if tapped?(new_resource.name)
     execute "untapping #{new_resource.name}" do
-      command "/usr/local/bin/brew untap #{new_resource.name}"
+      command "brew untap #{new_resource.name}"
       environment lazy { { 'HOME' => ::Dir.home(Homebrew.owner), 'USER' => Homebrew.owner } }
-      only_if "/usr/local/bin/brew tap | grep #{new_resource.name}"
+      only_if "brew tap | grep #{new_resource.name}"
       user Homebrew.owner
     end
   end

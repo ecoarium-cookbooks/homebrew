@@ -38,8 +38,8 @@ end
 execute 'set analytics' do
   environment lazy { { 'HOME' => ::Dir.home(Homebrew.owner), 'USER' => Homebrew.owner } }
   user Homebrew.owner
-  command "/usr/local/bin/brew analytics #{node['homebrew']['enable-analytics'] ? 'on' : 'off'}"
-  only_if { shell_out('/usr/local/bin/brew analytics state', user: Homebrew.owner).stdout.include?('enabled') != node['homebrew']['enable-analytics'] }
+  command "brew analytics #{node['homebrew']['enable-analytics'] ? 'on' : 'off'}"
+  only_if { shell_out('brew analytics state', user: Homebrew.owner).stdout.include?('enabled') != node['homebrew']['enable-analytics'] }
 end
 
 if node['homebrew']['auto-update']
@@ -50,6 +50,6 @@ if node['homebrew']['auto-update']
   execute 'update homebrew from github' do
     environment lazy { { 'HOME' => ::Dir.home(Homebrew.owner), 'USER' => Homebrew.owner } }
     user Homebrew.owner
-    command '/usr/local/bin/brew update || true'
+    command 'brew update || true'
   end
 end
